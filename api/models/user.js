@@ -22,8 +22,14 @@ var userSchema = new Schema({
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   registerToken: String,
-  habilitado: Boolean,
-  administrator: Boolean
+  habilitado: {
+    type: Boolean,
+    default: false
+  },
+  administrator: {
+    type: Boolean,
+    default: false
+  }
 }, {timestamps: true});
 
 var User = mongoose.model('User', userSchema);

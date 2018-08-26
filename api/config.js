@@ -1,14 +1,21 @@
 module.exports = {
   mongodb: {
-    server: 'mongodb://localhost:27017/base',
+    server: 'mongodb://localhost:27017/dsa',
     port: 27017
   },
   front: {
     url: 'http://localhost:3001'
   },
   api: {
-    name: 'base-admin',
-    port: 3000
+    name: 'dsa',
+    port: 3000,
+    host: 'localhost:3000'
   },
-  whitelistedDomains: ['http://localhost', 'http://192.168.0.5']
+  whitelistedDomains: ['http://localhost'],
+  mailOptions : {
+    auth: {
+      api_user: 'aleguizamon',
+      api_key: 'dsatpfinal6'
+    }
+  }
 };
