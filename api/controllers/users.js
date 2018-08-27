@@ -32,8 +32,9 @@ exports.count = (req, res) => {
 exports.create = (req, res) => {
   var salt = bcrypt.genSaltSync(4);
   var hash = bcrypt.hashSync(req.body.password, salt);
+  let token = Math.random().toString(36).substring(7);
 
-  req.body.registerToken = Math.random().toString(36).substring(7);
+  req.body.registerToken = token
 
   req.body.password = hash;
   req.body.habilitado = false;
@@ -82,9 +83,9 @@ exports.delete = (req, res) => {
 
 exports.activateUser = async (req, res) => {
   let user = await User.findById(req.params.id)
-  console.log(user);
   if (req.params.token == user.registerToken) {
     user.habilitado = true
+    user.registerToken = null
     await user.save()
     return res.status(200).json(user)
   } else {
@@ -106,4 +107,41 @@ exports.sendRegisterMail = (user) => {
   client.sendMail(email, function(err, info) {
     console.log('mail sent');
   });
+}
+
+exports.recover = async (req, res) => {
+  let user = await User.findOne({email: req.body.email})
+  let client = nodemailer.createTransport(sgTransport(config.mailOptions));
+  let token = Math.random().toString(36).substring(7);
+  user.resetPasswordToken = token
+  user.resetPasswordExpires = Date.now() + 3600000;
+  await user.save();
+  let email = {
+    from: 'recupero-password@tp-final-dsa.com',
+    to: user.email,
+    subject: 'Recuperación de contraseña',
+    text: 'Para recuperar su contraseña ingrese el siguiente token en el formulario: ' + token + ' , la validez de este token es de una hora'
+  };
+  client.sendMail(email, function(err, info) {
+    console.log('mail sent');
+  });
+  return res.status(200).json(user)
+}
+
+exports.reset = async (req, res) => {
+  let user = await User.findOne({email: req.body.email})
+  if (user.resetPasswordToken != req.body.token)
+    return res.status(400).json({err: 'El token no es valido para ese usuario'})
+
+  if (Date.parse(user.resetPasswordExpires) < Date.now())
+    return res.status(400).json({err: 'El token expiró'})
+
+  var salt = bcrypt.genSaltSync(4);
+  var hash = bcrypt.hashSync(req.body.password, salt);
+  user.password = hash
+  user.resetPasswordToken = null
+  user.resetPasswordExpires = null
+  user.save()
+  return res.status(200).json(user)
+
 }

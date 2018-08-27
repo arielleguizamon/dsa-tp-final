@@ -1,5 +1,6 @@
 'use strict';
 const user = require('../controllers/users')
+const team = require('../controllers/teams')
 
 module.exports.customRoutes = function customRoutes(router, passport) {
   router.get('/api/puntuacion-juego/:id', (req, res) => {
@@ -249,4 +250,7 @@ module.exports.customRoutes = function customRoutes(router, passport) {
   });
   router.post('/api/users', user.create)
   router.get('/api/usuario/:id/activar/:token', user.activateUser)
+  router.post('/api/usuario/recover', user.recover)
+  router.post('/api/usuario/reset', user.reset)
+  router.put('/api/equipo/:id/habilitar', passport.authenticate('jwt', {session: false}), team.activateTeam)
 }

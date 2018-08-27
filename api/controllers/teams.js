@@ -15,7 +15,9 @@ exports.list = (req, res) => {
 
 exports.count = (req, res) => {
   Team.count(req.query).exec(function(err, results) {
-    results = { count: results }
+    results = {
+      count: results
+    }
     if (err)
       return res.status(400).json(err);
     else
@@ -65,4 +67,14 @@ exports.delete = (req, res) => {
     else
       return res.json()
   })
+}
+
+exports.activateTeam = async (req, res) => {
+  if (req.user.administrator != true)
+    return res.status(403).json({err: 'forbidden'})
+
+  let team = await Team.findById(req.params.id)
+  team.aprobado = true
+  team.save()
+  return res.status(200).json(team)
 }

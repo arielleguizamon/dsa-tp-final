@@ -3,6 +3,10 @@ var mongoose = require('mongoose'),
   shortid = require('shortid');
 
 var userSchema = new Schema({
+  _id: {
+    type: String,
+    'default': shortid.generate
+  },
   username: {
     type: String,
     unique: true,
