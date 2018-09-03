@@ -253,4 +253,6 @@ module.exports.customRoutes = function customRoutes(router, passport) {
   router.post('/api/usuario/recover', user.recover)
   router.post('/api/usuario/reset', user.reset)
   router.put('/api/equipo/:id/habilitar', passport.authenticate('jwt', {session: false}), team.activateTeam)
+  router.put('/api/equipo/:id/asociar', passport.authenticate('jwt', {session: false}), team.associateUser)
+
 }

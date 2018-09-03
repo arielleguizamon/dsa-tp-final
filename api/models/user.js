@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
   shortid = require('shortid');
+var uniqueValidator = require('mongoose-unique-validator');
 
 var userSchema = new Schema({
   _id: {
@@ -18,7 +19,11 @@ var userSchema = new Schema({
   },
   nombre: String,
   apellido: String,
-  email: String,
+  email: {
+    unique: true,
+    required: true,
+    type: String
+  },
   equipo: {
     type: String,
     ref: 'Team'
@@ -30,11 +35,19 @@ var userSchema = new Schema({
     type: Boolean,
     default: false
   },
-  administrator: {
+  administrador: {
     type: Boolean,
     default: false
   }
 }, {timestamps: true});
+
+userSchema.methods.toJSON = function() {
+ var obj = this.toObject();
+ delete obj.password;
+ return obj;
+}
+
+userSchema.plugin(uniqueValidator);
 
 var User = mongoose.model('User', userSchema);
 

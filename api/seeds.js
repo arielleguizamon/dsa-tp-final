@@ -16,7 +16,7 @@ async function run() {
     apellido: 'admin',
     email: 'admin@admin.com',
     habilitado: true,
-    administrator: true
+    administrador: true
   }
 
   let salt2 = bcrypt.genSaltSync(4);
@@ -29,7 +29,7 @@ async function run() {
     apellido: 'user',
     email: 'user@user.com',
     habilitado: true,
-    administrator: false
+    administrador: false
   }
 
   let userdata2 = {
@@ -39,7 +39,7 @@ async function run() {
     apellido: 'user2',
     email: 'user2@user2.com',
     habilitado: true,
-    administrator: false
+    administrador: false
   }
 
   try {
@@ -49,13 +49,13 @@ async function run() {
     // console.log(e);
   }
   try {
-    user = await User.create(userdata);
+    let user = await User.create(userdata);
     console.log('User Created');
   } catch (e) {
     // console.log(e);
   }
   try {
-    user2 = await User.create(userdata2);
+    let user2 = await User.create(userdata2);
     console.log('User2 Created');
   } catch (e) {
     // console.log(e);
@@ -76,11 +76,11 @@ async function run() {
   }
 
   try {
-    team = await Team.create(team)
+    let team = await Team.create(team)
     console.log('team created');
   } catch (e) {
     // console.log(e);
   }
 
 }
-run().catch(error => console.log(err));
+run().catch(err => console.log(err));
