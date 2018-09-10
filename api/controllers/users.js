@@ -87,9 +87,9 @@ exports.activateUser = async (req, res) => {
     user.habilitado = true
     user.registerToken = null
     await user.save()
-    return res.status(200).json(user)
+    return res.status(200).send("El usuario " + user.username + " fue correctamene activado")
   } else {
-    return res.status(401)
+    return res.status(401).send("El token ya fue utilizado")
   }
 }
 
@@ -111,6 +111,14 @@ exports.sendRegisterMail = (user) => {
 
 exports.recover = async (req, res) => {
   let user = await User.findOne({email: req.body.email})
+  if (!user)
+    return res.status(400).json({
+      errors: {
+        email: {
+          message: 'El mail ingresado no existe'
+        }
+      }
+    })
   let client = nodemailer.createTransport(sgTransport(config.mailOptions));
   let token = Math.random().toString(36).substring(7);
   user.resetPasswordToken = token
@@ -130,11 +138,31 @@ exports.recover = async (req, res) => {
 
 exports.reset = async (req, res) => {
   let user = await User.findOne({email: req.body.email})
+  if (!user)
+    return res.status(400).json({
+      errors: {
+        email: {
+          message: 'El mail ingresado no existe'
+        }
+      }
+    })
   if (user.resetPasswordToken != req.body.token)
-    return res.status(400).json({err: 'El token no es valido para ese usuario'})
+    return res.status(400).json({
+      errors: {
+        token: {
+          message: 'El token no es valido para ese usuario'
+        }
+      }
+    })
 
   if (Date.parse(user.resetPasswordExpires) < Date.now())
-    return res.status(400).json({err: 'El token expiró'})
+    return res.status(400).json({
+      errors: {
+        token: {
+          message: 'El token expiró'
+        }
+      }
+    })
 
   var salt = bcrypt.genSaltSync(4);
   var hash = bcrypt.hashSync(req.body.password, salt);

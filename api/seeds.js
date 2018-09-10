@@ -54,7 +54,7 @@ async function run() {
     // console.log(e);
   }
   try {
-    user2 = await User.create(userdata2);
+    let user2 = await User.create(userdata2);
     console.log('User2 Created');
   } catch (e) {
     // console.log(e);
@@ -75,10 +75,10 @@ async function run() {
   }
 
   try {
-    team = await Team.create(team)
+    let team = await Team.create(team)
     console.log('team created');
   } catch (e) {
     // console.log(e);
   } */
 }
-run().catch(error => console.log(err));
+run().catch(err => console.log(err));

@@ -1,8 +1,9 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
   shortid = require('shortid');
+var uniqueValidator = require('mongoose-unique-validator');
 
-var equipoSchema = new Schema({
+var teamSchema = new Schema({
   _id: {
     type: String,
     'default': shortid.generate
@@ -33,6 +34,7 @@ var equipoSchema = new Schema({
   ]
 }, {timestamps: true});
 
-var Equipo = mongoose.model('Equipo', equipoSchema);
+teamSchema.plugin(uniqueValidator);
+var Team = mongoose.model('Team', teamSchema);
 
-module.exports = Equipo;
+module.exports = Team;
