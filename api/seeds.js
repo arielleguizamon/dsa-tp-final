@@ -1,55 +1,54 @@
-let bcrypt = require('bcrypt');
+let bcrypt = require("bcrypt");
 
-let User = require('./models/user')
-let Team = require('./models/team')
+let User = require("./models/user");
+let Team = require("./models/team");
 
 async function run() {
-
   /* User seeds */
   let salt = bcrypt.genSaltSync(4);
-  let hash = bcrypt.hashSync('admin', salt);
+  let hash = bcrypt.hashSync("admin", salt);
 
   let useradmin = {
-    username: 'admin',
+    username: "admin",
     password: hash,
-    nombre: 'admin',
-    apellido: 'admin',
-    email: 'admin@admin.com',
+    nombre: "admin",
+    apellido: "admin",
+    email: "admin@admin.com",
     habilitado: true,
-    administrador: true
-  }
+    administrator: true
+  };
 
   let salt2 = bcrypt.genSaltSync(4);
-  let hash2 = bcrypt.hashSync('user', salt2);
+  let hash2 = bcrypt.hashSync("user", salt2);
 
   let userdata = {
-    username: 'user',
+    username: "user",
     password: hash2,
-    nombre: 'user',
-    apellido: 'user',
-    email: 'user@user.com',
+    nombre: "user",
+    apellido: "user",
+    email: "user@user.com",
     habilitado: true,
-    administrador: false
-  }
+    administrator: false
+  };
 
   let userdata2 = {
-    username: 'user2',
+    username: "user2",
     password: hash2,
-    nombre: 'user2',
-    apellido: 'user2',
-    email: 'user2@user2.com',
+    nombre: "user2",
+    apellido: "user2",
+    email: "user2@user2.com",
     habilitado: true,
-    administrador: false
-  }
+    administrator: false
+  };
 
   try {
     await User.create(useradmin);
-    console.log('User admin Created');
+    console.log("User admin Created");
   } catch (e) {
     // console.log(e);
   }
-  try {
-    let user = await User.create(userdata);
+  /*   try {
+    user = await User.create(userdata);
     console.log('User Created');
   } catch (e) {
     // console.log(e);
@@ -59,11 +58,11 @@ async function run() {
     console.log('User2 Created');
   } catch (e) {
     // console.log(e);
-  }
+  } */
 
   /* Team seeds */
 
-  let team = {
+  /*   let team = {
     nombre: 'team 1',
     slug: 'team-1',
     organizacion: 'organizacion',
@@ -80,7 +79,6 @@ async function run() {
     console.log('team created');
   } catch (e) {
     // console.log(e);
-  }
-
+  } */
 }
 run().catch(err => console.log(err));
