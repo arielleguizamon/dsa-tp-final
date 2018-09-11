@@ -17,6 +17,9 @@ import {
   routerReducer,
   routerMiddleware
 } from "react-router-redux";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { PersistGate } from "redux-persist/integration/react";
 
 // disable ServiceWorker
 // import registerServiceWorker from './registerServiceWorker';
@@ -45,7 +48,16 @@ const reducer = combineReducers({
   router: routerReducer
 });
 
-const store = createStore(reducer, enhancer);
+const persistConfig = {
+  key: "session",
+  storage,
+  blacklist: ["ui", "router"]
+};
+
+const persistedReducer = persistReducer(persistConfig, reducer);
+
+const store = createStore(persistedReducer, enhancer);
+const persistor = persistStore(store);
 
 /* 
 if (process.env.NODE_ENV !== "production") {
@@ -59,9 +71,11 @@ if (process.env.NODE_ENV !== "production") {
 
 const root = (
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <App />
-    </ConnectedRouter>
+    <PersistGate loading={null} persistor={persistor}>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+    </PersistGate>
   </Provider>
 );
 

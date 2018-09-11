@@ -6,7 +6,8 @@ import UIActions from "../../modules/ui/actions";
 const mapStateToProps = state => {
   return {
     fetching: state.ui.fetching,
-    toast: state.ui.toast
+    toast: state.ui.toast,
+    user: state.session.user
   };
 };
 

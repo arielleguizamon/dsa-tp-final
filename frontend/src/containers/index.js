@@ -1,7 +1,4 @@
-import DefaultLayout from './DefaultLayout';
-import AnonymousLayout from './AnonymousLayout'
+import DefaultLayout from "./DefaultLayout/index";
+import AnonymousLayout from "./AnonymousLayout";
 
-export {
-  DefaultLayout,
-  AnonymousLayout
-};
+export { DefaultLayout, AnonymousLayout };

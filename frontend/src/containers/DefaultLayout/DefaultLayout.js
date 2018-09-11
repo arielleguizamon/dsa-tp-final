@@ -21,11 +21,21 @@ import DefaultFooter from "./DefaultFooter";
 import DefaultHeader from "./DefaultHeader";
 
 class DefaultLayout extends Component {
+  constructor(props) {
+    super(props);
+
+    this.logout = this.logout.bind(this);
+  }
+
+  logout() {
+    this.props.logout();
+    this.props.history.push("/login");
+  }
   render() {
     return (
       <div className="app">
         <AppHeader fixed>
-          <DefaultHeader />
+          <DefaultHeader logout={this.logout} user={this.props.user} />
         </AppHeader>
         <div className="app-body">
           <AppSidebar fixed display="lg">
