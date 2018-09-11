@@ -171,5 +171,5 @@ exports.reset = async (req, res) => {
   user.resetPasswordExpires = null
   user.save()
   return res.status(200).json(user)
-
 }
+exports.getUserFromToken = async (req, res) => {}

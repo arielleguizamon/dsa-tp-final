@@ -109,11 +109,7 @@ exports.activateTeam = async (req, res) => {
 
 exports.associateUser = async (req, res) => {
   let team = await Team.findById(req.params.id).populate('capitan')
-
   if (!team) {
-    return res.status(404).json({err: 'team not found'})
-  }
-  if (!player) {
     return res.status(404).json({err: 'team not found'})
   }
   if (req.body.token != team.token) {
