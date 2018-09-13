@@ -25,12 +25,14 @@ export default class Unirse extends React.Component {
           value: undefined,
           errors: undefined,
           validate: compose(
-            length(5),
+            length(6),
             required()
           )
         }
       }
     };
+
+    console.log(this.props);
 
     this.updateForm = updateForm.bind(this);
     this.validateField = validateField.bind(this);
@@ -45,15 +47,19 @@ export default class Unirse extends React.Component {
         .makeRequest(
           {
             method: "PUT",
-            url: "/equipo/" + this.state.formUnirse.token.value + "/asociar",
+            url: "/equipo/" + this.props.location.state.equipo._id + "/asociar",
             headers: {
               Authorization: "JWT " + this.props.user.token
+            },
+            data: {
+              token: this.state.formUnirse.token.value
             }
           },
           true,
           true
         )
         .then(response => {
+          console.log(response);
           this.props.setUser({
             ...this.props.user,
             equipo: response.data
@@ -72,7 +78,10 @@ export default class Unirse extends React.Component {
     return (
       <DefaultCard xs={6}>
         <h2>Unirse a un Equipo</h2>
-        <p className="text-muted">Complete el formulario</p>
+        <p className="text-muted">
+          Complete el formulario para unirse al equipo
+          {" " + this.props.location.state.equipo.nombre}
+        </p>
 
         <InputGroup
           type="text"

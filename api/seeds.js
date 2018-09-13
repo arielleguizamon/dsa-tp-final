@@ -15,7 +15,7 @@ async function run() {
     apellido: "admin",
     email: "admin@admin.com",
     habilitado: true,
-    administrator: true
+    administrador: true
   };
 
   let salt2 = bcrypt.genSaltSync(4);
@@ -28,7 +28,7 @@ async function run() {
     apellido: "user",
     email: "user@user.com",
     habilitado: true,
-    administrator: false
+    administrador: false
   };
 
   let userdata2 = {
@@ -38,7 +38,7 @@ async function run() {
     apellido: "user2",
     email: "user2@user2.com",
     habilitado: true,
-    administrator: false
+    administrador: false
   };
 
   try {

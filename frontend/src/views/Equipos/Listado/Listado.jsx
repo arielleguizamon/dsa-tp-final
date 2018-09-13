@@ -45,6 +45,20 @@ export default class Listado extends React.Component {
                   Habilitar
                 </Button>
               )}
+            {x.original.aprobado &&
+              !this.props.user.administrador &&
+              !this.props.user.equipo && (
+                <NavLink
+                  to={{
+                    pathname: "/equipos/unirse",
+                    state: {
+                      equipo: x.original
+                    }
+                  }}
+                >
+                  <Button>Unirse a Equipo</Button>
+                </NavLink>
+              )}
           </div>
         );
       }
@@ -100,13 +114,6 @@ export default class Listado extends React.Component {
               <Button>Registrar Equipo</Button>
             </NavLink>
           )}
-        {!user.equipo &&
-          !user.administrador && (
-            <NavLink to={"/equipos/unirse"}>
-              <Button>Unirse a Equipo</Button>
-            </NavLink>
-          )}
-
         <Table data={this.state.data} columns={this.columnsConfig} />
       </DefaultCard>
     );
