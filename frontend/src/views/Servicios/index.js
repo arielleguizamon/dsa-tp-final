@@ -1,3 +1,4 @@
 import Levantados from "./Levantados";
+import PorEquipo from "./PorEquipo";
 
-export default { Levantados };
+export default { Levantados, PorEquipo };

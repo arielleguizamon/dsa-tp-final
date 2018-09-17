@@ -12,20 +12,35 @@ export default class Levantados extends React.Component {
 
   columnsConfig = [
     {
-      Header: "Defensivo",
-      accessor: "defensivo"
+      Header: "Nombre",
+      accessor: "nombre_team"
     },
     {
-      Header: "Ofensivo",
-      accessor: "ofensivo"
+      Header: "ID Team",
+      accessor: "id_team"
     },
     {
-      Header: "Disclousure",
-      accessor: "disclousure"
+      Header: "IP",
+      accessor: "vm"
     },
     {
       Header: "Usuario",
       accessor: "id_usuario"
+    }
+  ];
+
+  serviciosColumnsConfig = [
+    {
+      Header: "Nombre",
+      accessor: "nombre"
+    },
+    {
+      Header: "Puerto",
+      accessor: "puerto"
+    },
+    {
+      Header: "Estado",
+      accessor: "estado"
     }
   ];
 
@@ -38,25 +53,39 @@ export default class Levantados extends React.Component {
       .makeRequest(
         {
           method: "get",
-          url: "/servicios-levantados/1"
+          url: "/servicios-levantados"
         },
         true,
         false
       )
       .then(response => {
-        console.log(response.data);
-        //this.setState({ data: response.data.puntajes });
+        console.log(response.data.equipos);
+        this.setState({ data: response.data.equipos });
       })
       .catch(errors => {
         console.log(errors);
       });
   }
 
+  renderServicios = row => {
+    return (
+      <Table
+        data={row.original.servicios}
+        columns={this.serviciosColumnsConfig}
+        showPagination={false}
+        defaultPageSize={0}
+      />
+    );
+  };
+
   render() {
-    const user = this.props.user;
     return (
       <DefaultCard>
-        <Table data={this.state.data} columns={this.columnsConfig} />
+        <Table
+          data={this.state.data}
+          columns={this.columnsConfig}
+          SubComponent={this.renderServicios}
+        />
       </DefaultCard>
     );
   }

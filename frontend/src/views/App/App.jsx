@@ -14,8 +14,7 @@ import "../../scss/style.css";
 
 // Containers
 import { DefaultLayout } from "../../containers";
-// Pages
-import { Page404, Page500 } from "../Pages";
+
 import Login from "../Login";
 import Registro from "../Registro";
 import { Step1, Step2 } from "../RecuperacionPassword";

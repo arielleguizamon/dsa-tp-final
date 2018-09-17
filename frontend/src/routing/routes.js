@@ -41,6 +41,12 @@ const routes = [
     exact: true,
     name: "Levantados",
     component: Servicios.Levantados
+  },
+  {
+    path: "/servicios/por-equipo",
+    exact: true,
+    name: "Levantados por Equipo",
+    component: Servicios.PorEquipo
   }
 ];
 
