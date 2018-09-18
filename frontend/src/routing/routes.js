@@ -2,6 +2,7 @@ import DefaultLayout from "../containers/DefaultLayout";
 import Equipos from "../views/Equipos";
 import Puntuaciones from "../views/Puntuaciones";
 import Servicios from "../views/Servicios";
+import Desafios from "../views/Desafios";
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -47,6 +48,12 @@ const routes = [
     exact: true,
     name: "Levantados por Equipo",
     component: Servicios.PorEquipo
+  },
+  {
+    path: "/desafios",
+    exact: true,
+    name: "Desafíos",
+    component: Desafios
   }
 ];
 
