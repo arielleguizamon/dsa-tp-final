@@ -1,13 +1,41 @@
 import React from "react";
 import DefaultCard from "../../components/DefaultCard";
+import Select from "../../components/Select";
 import Table from "../../components/STable";
+import { Row, Col, Button } from "reactstrap";
+import {
+  updateForm,
+  validateField,
+  validateForm,
+  populateErrors
+} from "../../lib/forms/utils";
+import { required } from "../../lib/forms/validators";
 
 export default class Desafios extends React.Component {
+  updateForm;
+  updateField;
+  validateForm;
+  populateErrors;
+
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      usuarios: [],
+      formBusqueda: {
+        usuario: {
+          value: undefined,
+          errors: undefined,
+          validate: required()
+        }
+      }
     };
+
+    this.updateForm = updateForm.bind(this);
+    this.validateField = validateField.bind(this);
+    this.validateForm = validateForm.bind(this);
+    this.populateErrors = populateErrors.bind(this);
+    this.formBusquedaSubmit = this.formBusquedaSubmit.bind(this);
   }
 
   columnsConfig = [
@@ -53,26 +81,46 @@ export default class Desafios extends React.Component {
   ];
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchUsuarios();
   }
 
-  fetchData() {
+  fetchUsuarios() {
     this.props
       .makeRequest(
         {
           method: "get",
-          url: "/desafios/1"
+          url: "/users"
         },
         true,
         false
       )
       .then(response => {
-        console.log(response.data.desafios);
-        this.setState({ data: response.data.desafios });
-      })
-      .catch(errors => {
-        console.log(errors);
+        this.setState({
+          usuarios: response.data.filter(
+            element => !element.administrador && element.habilitado
+          )
+        });
       });
+  }
+
+  formBusquedaSubmit() {
+    if (this.validateForm("formBusqueda")) {
+      this.props
+        .makeRequest(
+          {
+            method: "get",
+            url: "/desafios/1"
+          },
+          true,
+          false
+        )
+        .then(response => {
+          this.setState({ data: response.data.desafios });
+        })
+        .catch(errors => {
+          console.log(errors);
+        });
+    }
   }
 
   renderHints = row => {
@@ -93,6 +141,30 @@ export default class Desafios extends React.Component {
     const user = this.props.user;
     return (
       <DefaultCard>
+        <Row>
+          <Col xs="4">
+            <Select
+              label={"Usuario"}
+              options={this.state.usuarios}
+              valueAccessor={"_id"}
+              labelAccessor={"nombre"}
+              onChange={this.updateForm("formBusqueda", "usuario")}
+              onBlur={this.validateField("formBusqueda", "usuario")}
+              errors={this.state.formBusqueda.usuario.errors}
+              value={this.state.formBusqueda.usuario.value}
+            />
+          </Col>
+          <Col xs={{ size: 2, offset: 6 }}>
+            <Button
+              block
+              color="success"
+              className="btn-square btn-sm"
+              onClick={this.formBusquedaSubmit}
+            >
+              Buscar
+            </Button>
+          </Col>
+        </Row>
         <Table
           data={this.state.data}
           columns={this.columnsConfig}

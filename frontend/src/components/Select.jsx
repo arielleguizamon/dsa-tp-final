@@ -26,13 +26,14 @@ const RSSelect = props => {
             className={"form-control-sm"}
           >
             {!rest.value && <option value="" />}
-            {options.map((element, index) => {
-              return (
-                <option key={index} value={element[valueAccessor]}>
-                  {element[labelAccessor]}
-                </option>
-              );
-            })}
+            {options &&
+              options.map((element, index) => {
+                return (
+                  <option key={index} value={element[valueAccessor]}>
+                    {element[labelAccessor]}
+                  </option>
+                );
+              })}
           </Input>
           <FormFeedback>{errors}</FormFeedback>
         </Col>
