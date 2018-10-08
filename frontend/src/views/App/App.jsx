@@ -14,8 +14,7 @@ import "../../scss/style.css";
 
 // Containers
 import { DefaultLayout } from "../../containers";
-// Pages
-import { Page404, Page500 } from "../Pages";
+
 import Login from "../Login";
 import Registro from "../Registro";
 import { Step1, Step2 } from "../RecuperacionPassword";
@@ -26,30 +25,12 @@ import "react-toastify/dist/ReactToastify.min.css";
 // import { renderRoutes } from 'react-router-config'
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.checkUser = this.checkUser.bind(this);
-  }
-
   componentWillReceiveProps(props) {
     const { message, ...toastConfig } = props.toast;
     if (message) {
       toast(message, toastConfig);
       this.props.clearToast();
     }
-  }
-
-  renderMergedProps(component, ...rest) {
-    const finalProps = Object.assign({}, ...rest);
-    return React.createElement(component, finalProps);
-  }
-
-  checkUser(routeProps) {
-    if (this.props.user.token) {
-      return this.renderMergedProps(DefaultLayout, routeProps);
-    }
-    return <Redirect to={"/login"} />;
   }
 
   render() {
@@ -77,9 +58,11 @@ class App extends Component {
             name="Recuperacion de Password Step 2"
             component={Step2}
           />
-          <Route exact path="/404" name="Page 404" component={Page404} />
-          <Route exact path="/500" name="Page 500" component={Page500} />
-          <Route path="/" name="Home" render={this.checkUser} />
+          {this.props.user &&
+            this.props.user.token && (
+              <Route path="/" name="Home" component={DefaultLayout} />
+            )}
+          <Redirect from="/" to="/login" />
         </Switch>
       </div>
     );

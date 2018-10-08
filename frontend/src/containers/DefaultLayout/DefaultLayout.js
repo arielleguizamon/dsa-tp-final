@@ -61,7 +61,6 @@ class DefaultLayout extends Component {
                       />
                     ) : null
                 )}
-                <Redirect from="/" to="/404" />
               </Switch>
             </Container>
           </main>
