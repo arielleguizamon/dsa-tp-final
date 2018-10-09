@@ -62,7 +62,7 @@ class App extends Component {
             this.props.user.token && (
               <Route path="/" name="Home" component={DefaultLayout} />
             )}
-          <Redirect from="/" to="/login" />
+          <Redirect from="/" to="/login" exact={false} />
         </Switch>
       </div>
     );
